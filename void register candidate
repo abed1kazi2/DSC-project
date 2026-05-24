@@ -1,0 +1,55 @@
+void register_candidate(void) {
+    if (voting_open) {
+        printf("  [!] Cannot register candidates while voting is open.\n");
+        return;
+    }
+    if (candidate_count >= MAX_CANDIDATES) {
+        printf("  [!] Maximum candidate limit (%d) reached.\n", MAX_CANDIDATES);
+        return;
+    }
+
+    char name[MAX_NAME_LEN];
+    printf("  Enter candidate name : ");
+    fgets(name, MAX_NAME_LEN, stdin);
+    name[strcspn(name, "\n")] = '\0';
+
+    if (strlen(name) == 0) {
+        printf("  [!] Name cannot be empty.\n");
+        return;
+    }
+
+    char upper_input[MAX_NAME_LEN];
+    strcpy(upper_input, name);
+    to_upper(upper_input);
+
+    for (int i = 0; i < candidate_count; i++) {
+        char upper_existing[MAX_NAME_LEN];
+        strcpy(upper_existing, candidates[i].name);
+        to_upper(upper_existing);
+        if (strcmp(upper_input, upper_existing) == 0) {
+            printf("  [!] Candidate '%s' already registered.\n", name);
+            return;
+        }
+    }
+
+    candidates[candidate_count].id    = candidate_count + 1;
+    candidates[candidate_count].votes = 0;
+    strcpy(candidates[candidate_count].name, name);
+    candidate_count++;
+
+    printf("  [✓] '%s' registered as Candidate #%d.\n", name, candidate_count);
+}
+
+void toggle_voting(void) {
+    if (!voting_open) {
+        if (candidate_count < 2) {
+            printf("  [!] At least 2 candidates required to open voting.\n");
+            return;
+        }
+        voting_open = 1;
+        printf("  [✓] Voting is now OPEN.\n");
+    } else {
+        voting_open = 0;
+        printf("  [✓] Voting is now CLOSED.\n");
+    }
+}
