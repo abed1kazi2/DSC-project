@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX_CANDIDATES  10
+#define MAX_VOTERS      100
+#define MAX_NAME_LEN    50
+#define MAX_ID_LEN      20
+
+typedef struct {
+    char name[MAX_NAME_LEN];
+    int  votes;
+    int  id;
+} Candidate;
+
+typedef struct {
+    char voter_id[MAX_ID_LEN];
+    int  has_voted;
+} Voter;
+
+// Global State Management
+Candidate candidates[MAX_CANDIDATES];
+Voter     voters[MAX_VOTERS];
+int       candidate_count = 0;
+int       voter_count     = 0;
+int       voting_open     = 0;
+
+// Forward Declarations
+void display_candidates(void);
+void clear_input_buffer(void);
+void print_divider(void);
+void to_upper(char *str);
+void register_candidate(void);
+void toggle_voting(void);
+void cast_vote(void);
+void declare_winner(void);
+void show_voter_roll(void);
+void reset_election(void);
+void print_menu(void);
