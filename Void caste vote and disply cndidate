@@ -1,0 +1,67 @@
+void cast_vote(void) {
+    if (!voting_open) {
+        printf("  [!] Voting is currently closed.\n");
+        return;
+    }
+    if (voter_count >= MAX_VOTERS) {
+        printf("  [!] Maximum voter limit (%d) reached.\n", MAX_VOTERS);
+        return;
+    }
+
+    char voter_id[MAX_ID_LEN];
+    printf("  Enter your Voter ID  : ");
+    fgets(voter_id, MAX_ID_LEN, stdin);
+    voter_id[strcspn(voter_id, "\n")] = '\0';
+
+    if (strlen(voter_id) == 0) {
+        printf("  [!] Voter ID cannot be empty.\n");
+        return;
+    }
+
+    for (int i = 0; i < voter_count; i++) {
+        if (strcmp(voters[i].voter_id, voter_id) == 0) {
+            printf("  [✗] Voter ID '%s' has already cast a vote!\n", voter_id);
+            return;
+        }
+    }
+
+    display_candidates(); 
+    int choice;
+    printf("  Enter Candidate ID to vote for : ");
+    if (scanf("%d", &choice) != 1) {
+        printf("  [!] Invalid input.\n");
+        clear_input_buffer();
+        return;
+    }
+    clear_input_buffer();
+
+    if (choice < 1 || choice > candidate_count) {
+        printf("  [!] Invalid Candidate ID '%d'.\n", choice);
+        return;
+    }
+
+    strcpy(voters[voter_count].voter_id, voter_id);
+    voters[voter_count].has_voted = 1;
+    voter_count++;
+
+    candidates[choice - 1].votes++;
+    printf("  [✓] Vote cast for '%s' by Voter '%s'.\n",
+           candidates[choice - 1].name, voter_id);
+}
+
+void display_candidates(void) {
+    if (candidate_count == 0) {
+        printf("  [!] No candidates registered yet.\n");
+        return;
+    }
+    print_divider();
+    printf("  %-4s  %-30s  %s\n", "ID", "Candidate Name", "Votes");
+    print_divider();
+    for (int i = 0; i < candidate_count; i++) {
+        printf("  %-4d  %-30s  %d\n",
+               candidates[i].id,
+               candidates[i].name,
+               candidates[i].votes);
+    }
+    print_divider();
+}
