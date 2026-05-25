@@ -81,11 +81,16 @@ On launch, you are presented with an interactive menu:
 ---
 
 ## Project Structure
+ 
+```
+Configuration, Headers, & Data Structures    # Macros, structs, and global declarations
+void register candidate                      # Candidate registration logic
+Void caste vote and disply cndidate          # Vote casting and candidate display logic
+declare winner , show voter roll & toggle voting  # Winner declaration, voter roll, voting toggle
+display candidates & reset election          # Display helpers and election reset logic
+README.md                                    # This file
+```
 
-```
-voting_system.c    # Single-file source — all logic, structs, and main()
-README.md          # This file
-```
 
 ### Key Components
 
