@@ -40,16 +40,4 @@ void register_candidate(void) {
     printf("  [✓] '%s' registered as Candidate #%d.\n", name, candidate_count);
 }
 
-void toggle_voting(void) {
-    if (!voting_open) {
-        if (candidate_count < 2) {
-            printf("  [!] At least 2 candidates required to open voting.\n");
-            return;
-        }
-        voting_open = 1;
-        printf("  [✓] Voting is now OPEN.\n");
-    } else {
-        voting_open = 0;
-        printf("  [✓] Voting is now CLOSED.\n");
-    }
-}
+
