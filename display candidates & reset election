@@ -1,0 +1,49 @@
+void clear_input_buffer(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+void print_divider(void) {
+    printf("──────────────────────────────────────────────────\n");
+}
+
+void to_upper(char *str) {
+    for (int i = 0; str[i]; i++)
+        str[i] = toupper((unsigned char)str[i]);
+}
+
+
+void display_candidates(void) {
+    if (candidate_count == 0) {
+        printf("  [!] No candidates registered yet.\n");
+        return;
+    }
+    print_divider();
+    printf("  %-4s  %-30s  %s\n", "ID", "Candidate Name", "Votes");
+    print_divider();
+    for (int i = 0; i < candidate_count; i++) {
+        printf("  %-4d  %-30s  %d\n",
+               candidates[i].id,
+               candidates[i].name,
+               candidates[i].votes);
+    }
+    print_divider();
+}
+
+void reset_election(void) {
+    char confirm[10];
+    printf("  [!] This will erase ALL data. Type YES to confirm: ");
+    fgets(confirm, sizeof(confirm), stdin);
+    confirm[strcspn(confirm, "\n")] = '\0';
+
+    if (strcmp(confirm, "YES") == 0) {
+        candidate_count = 0;
+        voter_count     = 0;
+        voting_open     = 0;
+        memset(candidates, 0, sizeof(candidates));
+        memset(voters,     0, sizeof(voters));
+        printf("  [✓] Election data has been reset.\n");
+    } else {
+        printf("  [–] Reset cancelled.\n");
+    }
+}
